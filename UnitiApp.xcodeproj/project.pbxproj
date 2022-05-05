@@ -7,34 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		68046A7C2823217000F685E9 /* gestionimmo.vdb in Resources */ = {isa = PBXBuildFile; fileRef = 68046A7B2823217000F685E9 /* gestionimmo.vdb */; };
 		68046A84282332A700F685E9 /* LoyerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68046A83282332A700F685E9 /* LoyerDetailView.swift */; };
 		68046A862823337C00F685E9 /* Loyer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68046A852823337C00F685E9 /* Loyer.swift */; };
 		68046A882823341700F685E9 /* LoyerCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68046A872823341700F685E9 /* LoyerCreationView.swift */; };
 		68046A8A2823FC6400F685E9 /* Authentification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68046A892823FC6400F685E9 /* Authentification.swift */; };
 		68046A8C2823FC7000F685E9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68046A8B2823FC7000F685E9 /* LocationManager.swift */; };
+		891B54802824005B00133CBF /* gestionloyer.db in Resources */ = {isa = PBXBuildFile; fileRef = 891B547F2824005A00133CBF /* gestionloyer.db */; };
 		89C9DC8A2817180B0080BFF3 /* UnitiAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C9DC892817180B0080BFF3 /* UnitiAppApp.swift */; };
 		89C9DC8C2817180B0080BFF3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C9DC8B2817180B0080BFF3 /* ContentView.swift */; };
 		89C9DC8E2817180C0080BFF3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89C9DC8D2817180C0080BFF3 /* Assets.xcassets */; };
 		89C9DC912817180C0080BFF3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 89C9DC902817180C0080BFF3 /* Preview Assets.xcassets */; };
 		89C9DCA92817221A0080BFF3 /* GestionBD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C9DCA82817221A0080BFF3 /* GestionBD.swift */; };
-		89C9DCAB281725B10080BFF3 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89C9DCAA281725B10080BFF3 /* MainView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		68046A7B2823217000F685E9 /* gestionimmo.vdb */ = {isa = PBXFileReference; lastKnownFileType = file; name = gestionimmo.vdb; path = Dev/gestionimmo.vdb; sourceTree = SOURCE_ROOT; };
 		68046A83282332A700F685E9 /* LoyerDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoyerDetailView.swift; sourceTree = "<group>"; };
 		68046A852823337C00F685E9 /* Loyer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loyer.swift; sourceTree = "<group>"; };
 		68046A872823341700F685E9 /* LoyerCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyerCreationView.swift; sourceTree = "<group>"; };
 		68046A892823FC6400F685E9 /* Authentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authentification.swift; sourceTree = "<group>"; };
 		68046A8B2823FC7000F685E9 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		891B547F2824005A00133CBF /* gestionloyer.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = gestionloyer.db; path = Dev/gestionloyer.db; sourceTree = SOURCE_ROOT; };
 		89C9DC862817180B0080BFF3 /* UnitiApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnitiApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		89C9DC892817180B0080BFF3 /* UnitiAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitiAppApp.swift; sourceTree = "<group>"; };
 		89C9DC8B2817180B0080BFF3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		89C9DC8D2817180C0080BFF3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		89C9DC902817180C0080BFF3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		89C9DCA82817221A0080BFF3 /* GestionBD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GestionBD.swift; sourceTree = "<group>"; };
-		89C9DCAA281725B10080BFF3 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,8 +65,7 @@
 		89C9DC882817180B0080BFF3 /* UnitiApp */ = {
 			isa = PBXGroup;
 			children = (
-				68046A7B2823217000F685E9 /* gestionimmo.vdb */,
-				89C9DCB1281AC3C50080BFF3 /* Helpers */,
+				891B547F2824005A00133CBF /* gestionloyer.db */,
 				89C9DC9E281719320080BFF3 /* Views */,
 				89C9DC9D281719290080BFF3 /* Models */,
 				89C9DC9C281719180080BFF3 /* Services */,
@@ -110,17 +107,9 @@
 			children = (
 				68046A83282332A700F685E9 /* LoyerDetailView.swift */,
 				89C9DC8B2817180B0080BFF3 /* ContentView.swift */,
-				89C9DCAA281725B10080BFF3 /* MainView.swift */,
 				68046A872823341700F685E9 /* LoyerCreationView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		89C9DCB1281AC3C50080BFF3 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,9 +174,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				68046A7C2823217000F685E9 /* gestionimmo.vdb in Resources */,
 				89C9DC912817180C0080BFF3 /* Preview Assets.xcassets in Resources */,
 				89C9DC8E2817180C0080BFF3 /* Assets.xcassets in Resources */,
+				891B54802824005B00133CBF /* gestionloyer.db in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,7 +191,6 @@
 				68046A862823337C00F685E9 /* Loyer.swift in Sources */,
 				68046A84282332A700F685E9 /* LoyerDetailView.swift in Sources */,
 				89C9DC8C2817180B0080BFF3 /* ContentView.swift in Sources */,
-				89C9DCAB281725B10080BFF3 /* MainView.swift in Sources */,
 				89C9DCA92817221A0080BFF3 /* GestionBD.swift in Sources */,
 				68046A882823341700F685E9 /* LoyerCreationView.swift in Sources */,
 				89C9DC8A2817180B0080BFF3 /* UnitiAppApp.swift in Sources */,

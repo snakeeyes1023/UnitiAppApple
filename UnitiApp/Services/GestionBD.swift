@@ -79,7 +79,7 @@ class GestionBD {
  - Returns: Liste des loyers.
 */
 func listeLoyers() -> [Loyer] {
-  let requete: String = "SELECT id, nom, largeur, longueur, uuid, dispo FROM items ORDER BY nom"
+  let requete: String = "SELECT id, nom, grandeur, prix, uuid, dispo FROM items ORDER BY nom"
   var loyers: [Loyer] = []
   var preparation: OpaquePointer? = nil
 
@@ -91,13 +91,13 @@ func listeLoyers() -> [Loyer] {
 
       let id = Int(sqlite3_column_int(preparation, 0))
       let nom = String(cString: sqlite3_column_text(preparation, 1))
-      let largeur = Double(sqlite3_column_double(preparation, 2))
-      let longueur = Double(sqlite3_column_double(preparation, 3))
+      let grandeur = Double(sqlite3_column_double(preparation, 2))
+      let prix = Double(sqlite3_column_double(preparation, 3))
       let uuid = String(cString: sqlite3_column_text(preparation, 4))
       let dispo = Int(sqlite3_column_int(preparation, 5)) == 1
 
 
-      loyers.append(Loyer(id: id, nom: nom, largeur: largeur, longueur: longueur, uuid: uuid, dispo: dispo))
+      loyers.append(Loyer(id: id, nom: nom, grandeur: grandeur, prix: prix, uuid: uuid, dispo: dispo))
     }
   } else {
     let erreur = String(cString: sqlite3_errmsg(pointeurBD))
@@ -115,12 +115,12 @@ func listeLoyers() -> [Loyer] {
 
  - Returns: True si l'ajout a réussi, False sinon.
 */
-func ajouterLoyer(nom: String, largeur: Double, longueur: Double) -> Bool {
+func ajouterLoyer(nom: String, grandeur: Double, prix: Double) -> Bool {
   var reussi: Bool = false
   //generer uuid
   let uuid = UUID().uuidString
 
-  let requete: String = "INSERT INTO loyers (nom, largeur, longueur, uuid, dispo) VALUES (?, ?, ?, ?, ?)"
+  let requete: String = "INSERT INTO loyers (nom, grandeur, prix, uuid, dispo) VALUES (?, ?, ?, ?, ?)"
   var preparation: OpaquePointer? = nil
 
   // prépare la requête
@@ -128,8 +128,8 @@ func ajouterLoyer(nom: String, largeur: Double, longueur: Double) -> Bool {
 
     // ajoute les paramètres
     sqlite3_bind_text(preparation, 1, nom, -1, nil)
-    sqlite3_bind_double(preparation, 2, largeur)
-    sqlite3_bind_double(preparation, 3, longueur)
+    sqlite3_bind_double(preparation, 2, grandeur)
+    sqlite3_bind_double(preparation, 3, prix)
     sqlite3_bind_text(preparation, 4, uuid, -1, nil)
     sqlite3_bind_int(preparation, 5, 1)
 
@@ -186,9 +186,9 @@ func supprimerLoyer(id : Int) -> Bool
   return resultat
 }
 
-func modifierLoyer(id: Int, nom: String, largeur: Double, longueur: Double) -> Bool
+func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double) -> Bool
 {
-  let requete: String = "UPDATE loyers SET nom = ?, largeur = ?, longueur = ? WHERE id = ?"
+  let requete: String = "UPDATE loyers SET nom = ?, prix = ?, grandeur = ? WHERE id = ?"
   var preparation: OpaquePointer? = nil
   var resultat: Bool = false
   // prépare la requête
@@ -196,8 +196,8 @@ func modifierLoyer(id: Int, nom: String, largeur: Double, longueur: Double) -> B
 
     // ajoute les paramètres
     sqlite3_bind_text(preparation, 1, nom, -1, nil)
-    sqlite3_bind_double(preparation, 2, largeur)
-    sqlite3_bind_double(preparation, 3, longueur)
+    sqlite3_bind_double(preparation, 2, prix)
+    sqlite3_bind_double(preparation, 3, grandeur)
     sqlite3_bind_int(preparation, 4, Int32(id))
 
     // exécute la requête

@@ -13,10 +13,10 @@ struct LoyerCreationView: View {
     var id : Int = -1;
     
     @State var nom: String = "";
-    @State var largeur: Double = 0.0;
-    @State var longueur: Double = 0.0;
-    @State var longitude: String = (locationManager.lastLocation?.coordinate.longitude ?? 0) as String;
-    @State var lattitude: String = 0.0 (locationManager.lastLocation?.coordinate.latitude ?? 0) as String;
+    @State var prix: Double = 0;
+    @State var grandeur: Double = 3.5;
+    @State var longitude: String = "" //String(locationManager.lastLocation?.coordinate.longitude ?? 0);
+    @State var lattitude: String = "" //String(locationManager.lastLocation?.coordinate.latitude ?? 0);
     
 
     var body: some View {
@@ -26,60 +26,52 @@ struct LoyerCreationView: View {
                 Text("Un problème empêche l'ouverture de la base de données.")
             } else {
                 
-                VStack{
-                    
-                    List{
+                NavigationView {
+                    ZStack(){
+                        Rectangle()
+                            .fill(Color.gray)
+                            .opacity(0.09)
+                            .cornerRadius(10)
                         
-                        ZStack(){
-                            Rectangle()
-                                .fill(Color.gray)
-                                .opacity(0.09)
-                                .cornerRadius(10)
-                                .border(Color.black, width: 2)
-                            
-                            HStack(){
-                                
-                                VStack(alignment: .leading, spacing: 6) {                                    
-                                    Text("nom : ")
-                                    TextField("nom", text: $nom)                                   
-                                }
-
-                                // Grandeur
-                                VStack(){
-                                    Text("largeur : ")
-                                    TextField("largeur", value: $largeur, formatter: NumberFormatter())
-                                }
-                                VStack(){
-                                    Text("longueur : ")
-                                    TextField("longueur", value: $longueur, formatter: NumberFormatter())
-                                }
-
-                                // Position
-                                VStack(){
-                                    Text("longitude : ")
-                                    TextField("longitude", value: $longitude)
-                                }
-
-                                VStack(){
-                                    Text("lattitude : ")
-                                    TextField("lattitude", value: $lattitude)
-                                }
-
-                                
-                            }
-                        }.padding(10)
-                        }
-                    }
+                           Form {
+                               Section(header: Text("Général")) {
+                                   TextField("Nom", text: $nom)
+                                   TextField("Prix", value: $prix, format: .number)
+                               }
+                           
+                               Section(header: Text("Grandeur")) {
+                                   Stepper(value: $grandeur, in: 1...10, step: 0.5) {
+                                       Text("Grandeur : \(grandeur, specifier: "%.2f")")
+                                   }
+                               }
+                               
+                               Section(header: Text("Position")) {
+                                   TextField("Longitude", text: $longitude)
+                                   TextField("Lattitude", text: $lattitude)
+                               }
+                               
+                               Section {
+                                   Button(action: {
+                                       print("Perform an action here...")
+                                   }) {
+                                       Text(id == -1 ? "Ajouter le loyer" : "Modifier le loyer")
+                                   }
+                               }
+                           }
+                           .navigationBarTitle("Jonathan Côté")
+                       }
+                }
+                
                     
-                    if nom != "" && largeur != 0.0 && longueur != 0.0 && description != "" {
+                if nom != "" && grandeur != 0.0  {
                         Button(action: {
                             var result : Bool = false;
 
                             // Création d'un nouveau loyer si le id n'est pas défini
                             if self.id == -1 {
-                                result = self.gestionBD.ajouterLoyer(nom: self.nom, largeur: self.largeur, longueur: self.longueur)
+                                result = self.gestionBD.ajouterLoyer(nom: self.nom, grandeur: self.grandeur, prix: self.prix)
                             } else {
-                                result = self.gestionBD.modifierLoyer(id: self.id, nom: self.nom, largeur: self.largeur, longueur: self.longueur)
+                                result = self.gestionBD.modifierLoyer(id: self.id, nom: self.nom, prix: self.prix, grandeur: self.grandeur)
                             }
                             
                             // Si la création a réussi, on affiche un message de confirmation
@@ -95,6 +87,4 @@ struct LoyerCreationView: View {
             }
         }
     }
-
-}
 

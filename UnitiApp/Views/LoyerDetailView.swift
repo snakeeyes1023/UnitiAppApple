@@ -21,7 +21,6 @@ struct LoyerDetailView: View {
                     .fill(Color.gray)
                     .opacity(0.09)
                     .cornerRadius(10)
-                    .border(Color.black, width: 2)
                 
                 HStack(){
                     
@@ -31,18 +30,15 @@ struct LoyerDetailView: View {
                         
                     }
                     VStack(){
-                        Text("largeur : " + String(loyer.largeur))
+                        Text("grandeur : " + String(loyer.grandeur))
                     }
-                    VStack(){
-                        Text("longueur : " + String(loyer.longueur))
-                    }                          
 
                     Spacer()
 
                     // button toggle active
                     Button(action: {
-                        self.gestionBD.loyerToggle(id: self.loyer.id, active: !self.loyer.dispo)
-                        self.loyer.dispo = !self.loyer.dispo
+                        //self.gestionBD.loyerToggle(id: self.loyer.id, active: !self.loyer.dispo)
+                        //self.loyer.dispo = !self.loyer.dispo
                     }) {
                         Text(loyer.dispo ? "Active" : "Inactive")
                     }                                                                
@@ -52,4 +48,3 @@ struct LoyerDetailView: View {
         }
         
     }
-}

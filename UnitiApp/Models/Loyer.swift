@@ -11,8 +11,8 @@ import Foundation
 struct Loyer : Identifiable {
     var id : Int;
     var nom : String;
-    var largeur : Double;
-    var longueur : Double;
+    var grandeur : Double;
+    var prix: Double;
     var uuid : String;
     var dispo : Bool;
 }

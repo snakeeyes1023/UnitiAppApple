@@ -11,25 +11,31 @@ struct ContentView: View {
     
     @ObservedObject var authentification: Authentification = Authentification()
 
-    @State var gestionBD: GestionBD = GestionBD(nomBD: "gestionloyer.db");
+    @State var gestionBD: GestionBD = GestionBD(nomBD: "gestionloyer.db")
     
-    @State var initialDonnees : Bool = false;
+    @State var initialDonnees : Bool = false
     
-    @Binding var loyers : [Loyer]
+    @State var loyers : [Loyer] = [Loyer]()
     
+    @State private var action: Int? = 0
+
     init() {
         gestionBD.ouvrirBD()
     }
-
+    
     var body: some View {
-           if (authentification.statut == .nonAuthentifie) {
+        if (authentification.statut == .authentifie) {
             Text("Vous devez être authentifié pour accéder à cette application.")
                 .padding()
         }
         else {
+            
     
         NavigationView{
             VStack{
+                NavigationLink(destination: LoyerCreationView(gestionBD: $gestionBD), tag: 1, selection: $action) {
+                    EmptyView()
+                }
                 ScrollView{
                      if gestionBD.pointeurBD == nil {
                         Text("Un problème empêche l'ouverture de la base de données.")
@@ -45,7 +51,11 @@ struct ContentView: View {
                     }
                 }
         }
-        .navigationBarItems(leading: EditButton(), trailing: boutonAjouter)
+        .navigationBarItems(leading: EditButton(), trailing: Text("Ajouter")
+        .onTapGesture {
+            self.action = 1
+        })
+            
         .navigationBarTitle("Jonathan Côté", displayMode: .inline)
         .padding()
         .onAppear {
@@ -56,21 +66,6 @@ struct ContentView: View {
         }
         }
     }
-
-    /*
-    *  Bouton ajouter un loyer
-    */
-    var boutonAjouter: some View {
-        switch editMode {
-        case .inactive:
-            return AnyView(Button(action: {}) { 
-                NavigationLink(destination: LoyerCreationView(gestionBD: $gestionBD)) {
-                    Image(systemName: "plus") 	
-                }
-         })
-        default:
-            return AnyView(EmptyView())
-        }
     }
     
     /*
@@ -78,16 +73,14 @@ struct ContentView: View {
     */
     func deleteLoyer(at offsets: IndexSet) {
         for index in offsets {
-            gestionBD.supprimerLoyer(loyers[index].id);
+            _ = gestionBD.supprimerLoyer(id: loyers[index].id);
         }
         loyers = gestionBD.listeLoyers();
     }
-
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView().preferredColorScheme(.light)
     }
-}
 }
