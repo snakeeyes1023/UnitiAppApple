@@ -10,7 +10,7 @@ struct LoyerDetailView: View {
         
     var loyer: Loyer;
     @Binding var gestionBD: GestionBD;
-
+    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
 
     
     var body: some View {
@@ -23,9 +23,20 @@ struct LoyerDetailView: View {
                     .cornerRadius(10)
                 
                 HStack(){
+                    AsyncImage(url: URL(string: "https://images.unsplash.com/photo-1604251806132-6b149e8e6730?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80.png")) { image in
+                        image.resizable()
+                    } placeholder: {
+                        Color.gray
+                    }
+                    .frame(width: 255 , height: 128)
+                    .clipShape(RoundedRectangle(cornerRadius: 25))                    
                     
-                    VStack(alignment: .leading, spacing: 6) {
+                     Map(coordinateRegion: $region)
+                        .frame(width: 400, height: 300)
                         
+                    Spacer()
+
+                    VStack(alignment: .leading, spacing: 6) {      
                         Text("nom : " + loyer.nom)
                         
                     }

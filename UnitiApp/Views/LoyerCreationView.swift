@@ -63,15 +63,15 @@ struct LoyerCreationView: View {
                 }
                 
                     
-                if nom != "" && grandeur != 0.0  {
+                if nom != "" && grandeur != 0.0 && prix != 0.0 && longitude != "" && lattitude != "" {
                         Button(action: {
                             var result : Bool = false;
 
                             // Création d'un nouveau loyer si le id n'est pas défini
                             if self.id == -1 {
-                                result = self.gestionBD.ajouterLoyer(nom: self.nom, grandeur: self.grandeur, prix: self.prix)
+                                result = self.gestionBD.ajouterLoyer(nom: self.nom, grandeur: self.grandeur, prix: self.prix, longitude: self.longitude, lattitude: self.lattitude)
                             } else {
-                                result = self.gestionBD.modifierLoyer(id: self.id, nom: self.nom, prix: self.prix, grandeur: self.grandeur)
+                                result = self.gestionBD.modifierLoyer(id: self.id, nom: self.nom, prix: self.prix, grandeur: self.grandeur, longitude: self.longitude, lattitude: self.lattitude)
                             }
                             
                             // Si la création a réussi, on affiche un message de confirmation
