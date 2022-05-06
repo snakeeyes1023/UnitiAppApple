@@ -106,9 +106,7 @@ func listeLoyers() -> [Loyer] {
   }
 
   // libération de la mémoire
-  sqlite3_finalize(preparation)
-    var test : [Loyer] = loyers;
-    
+  sqlite3_finalize(preparation)    
     
   return loyers
 }
@@ -194,19 +192,19 @@ func supprimerLoyer(id : Int) -> Bool
 
 func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double, longitude: String, lattitude: String) -> Bool
 {
-  let requete: String = "UPDATE loyers SET nom = ?, prix = ?, grandeur = ? WHERE id = ?"
+  let requete: String = "UPDATE loyers SET nom = ?, prix = ?, grandeur = ?, longitude = ?, lattitude = ? WHERE id = ?"
   var preparation: OpaquePointer? = nil
   var resultat: Bool = false
   // prépare la requête
   if sqlite3_prepare_v2(pointeurBD, requete, -1, &preparation, nil) == SQLITE_OK {
 
     // ajoute les paramètres
-    sqlite3_bind_text(preparation, 0, nom, -1, nil)
-    sqlite3_bind_double(preparation, 1, prix)
-    sqlite3_bind_double(preparation, 2, grandeur)
-    sqlite3_bind_int(preparation, 3, Int32(id))
+    sqlite3_bind_text(preparation, 1, nom, -1, nil)
+    sqlite3_bind_double(preparation, 2, prix)
+    sqlite3_bind_double(preparation, 3, grandeur)
     sqlite3_bind_text(preparation, 4, longitude, -1, nil)
     sqlite3_bind_text(preparation, 5, lattitude, -1, nil)
+      sqlite3_bind_int(preparation, 6, Int32(id))
 
     // exécute la requête
     if sqlite3_step(preparation) == SQLITE_DONE {

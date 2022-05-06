@@ -10,11 +10,24 @@ struct LoyerDetailView: View {
         
     var loyer: Loyer;
     @Binding var gestionBD: GestionBD;
-    
+    @State private var action: Int? = 0
+
     var body: some View {
+   
         VStack{
 
             ZStack(){
+                NavigationLink(destination: LoyerCreationView(gestionBD: $gestionBD,
+                                                              id: loyer.id,
+                                                              nom: loyer.nom,
+                                                              prix : loyer.prix,
+                                                              grandeur: loyer.grandeur,
+                                                              longitude: loyer.longitude,
+                                                              lattitude: loyer.lattitude
+                                                              ), tag: 1, selection: $action) {
+                    EmptyView()
+                    
+                }
                 Rectangle()
                     .fill(Color.gray)
                     .opacity(0.09)
@@ -29,28 +42,37 @@ struct LoyerDetailView: View {
                     .frame(width: 255 , height: 128)
                     .clipShape(RoundedRectangle(cornerRadius: 25))                    
                                            
-                    Spacer()
-
                     VStack(alignment: .leading, spacing: 6) {      
                         Text("nom : " + loyer.nom)
-                        
                     }
+                    
+                    Spacer()
+
                     VStack(){
                         Text("grandeur : " + String(loyer.grandeur))
                     }
 
                     Spacer()
+                    
+                    HStack{
+                        // button toggle active
+                        Button(action: {
+                            //self.gestionBD.loyerToggle(id: self.loyer.id, active: !self.loyer.dispo)
+                            //self.loyer.dispo = !self.loyer.dispo
+                        }) {
+                            Text(loyer.dispo ? "Mettre non disponnible" : "Mettre disponnible")
+                        }
+                        
+                        Text("Modifier").onTapGesture {
+                            self.action = 1
+                        }
+                    }
 
-                    // button toggle active
-                    Button(action: {
-                        //self.gestionBD.loyerToggle(id: self.loyer.id, active: !self.loyer.dispo)
-                        //self.loyer.dispo = !self.loyer.dispo
-                    }) {
-                        Text(loyer.dispo ? "Active" : "Inactive")
-                    }                                                                
+                                                                              
                 }
             }.padding(10)             
-            }
+            
         }
+    }
         
     }

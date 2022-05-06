@@ -36,22 +36,27 @@ struct ContentView: View {
                 NavigationLink(destination: LoyerCreationView(gestionBD: $gestionBD), tag: 1, selection: $action) {
                     EmptyView()
                 }
-                ScrollView{
                      if gestionBD.pointeurBD == nil {
                         Text("Un problème empêche l'ouverture de la base de données.")
                     } else {
+                        
                         List {
-                            ForEach($loyers) { $loyer in
+                            ForEach(loyers) { loyer in
                                 NavigationLink(destination: LoyerDetailView(loyer: loyer, gestionBD: $gestionBD)) {
-                                    Text(loyer.nom)
+                                    HStack {
+                                      Image(systemName: "house")
+                                      Text("-")
+                                      Text(loyer.nom)
+                                            .foregroundColor(.primary)
+                                    }
                                 }
-                            }
+                        }
                         .onDelete(perform: deleteLoyer)
-                        }       
+                        }
                     }
-                }
+                
         }
-            .navigationBarItems(leading: EditButton(), trailing: Text("Ajouter").foregroundColor(.blue)
+        .navigationBarItems(leading: EditButton(), trailing: Text("Ajouter").foregroundColor(.blue)
         .onTapGesture {
             self.action = 1
         })
@@ -64,7 +69,7 @@ struct ContentView: View {
                 loyers = gestionBD.listeLoyers();
             }
         }
-        }
+    }
     }
     }
     
@@ -81,6 +86,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView().preferredColorScheme(.light)
+        ContentView()
     }
 }
