@@ -43,7 +43,7 @@ struct ContentView: View {
                         List {
                             ForEach($loyers) { $loyer in
                                 NavigationLink(destination: LoyerDetailView(loyer: loyer, gestionBD: $gestionBD)) {
-                                Text($loyer.nom)
+                                    Text(loyer.nom)
                                 }
                             }
                         .onDelete(perform: deleteLoyer)
@@ -51,7 +51,7 @@ struct ContentView: View {
                     }
                 }
         }
-        .navigationBarItems(leading: EditButton(), trailing: Text("Ajouter")
+            .navigationBarItems(leading: EditButton(), trailing: Text("Ajouter").foregroundColor(.blue)
         .onTapGesture {
             self.action = 1
         })

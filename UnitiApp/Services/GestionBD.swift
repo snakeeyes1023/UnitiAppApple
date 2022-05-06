@@ -107,7 +107,9 @@ func listeLoyers() -> [Loyer] {
 
   // libération de la mémoire
   sqlite3_finalize(preparation)
-
+    var test : [Loyer] = loyers;
+    
+    
   return loyers
 }
 
