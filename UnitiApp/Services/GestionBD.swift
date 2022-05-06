@@ -128,13 +128,13 @@ func ajouterLoyer(nom: String, grandeur: Double, prix: Double, longitude: String
   if sqlite3_prepare_v2(pointeurBD, requete, -1, &preparation, nil) == SQLITE_OK {
 
     // ajoute les paramètres
-    sqlite3_bind_text(preparation, 0, nom, -1, nil)
-    sqlite3_bind_double(preparation, 1, grandeur)
-    sqlite3_bind_double(preparation, 2, prix)
-    sqlite3_bind_text(preparation, 3, uuid, -1, nil)
-    sqlite3_bind_int(preparation, 4, 1)
-    sqlite3_bind_text(preparation, 5, longitude, -1, nil)
-    sqlite3_bind_text(preparation, 6, lattitude, -1, nil)
+    sqlite3_bind_text(preparation, 1, nom, -1, nil)
+    sqlite3_bind_double(preparation, 2, grandeur)
+    sqlite3_bind_double(preparation, 3, prix)
+    sqlite3_bind_text(preparation, 4, uuid, -1, nil)
+    sqlite3_bind_int(preparation, 5, 1)
+    sqlite3_bind_text(preparation, 6, longitude, -1, nil)
+    sqlite3_bind_text(preparation, 7, lattitude, -1, nil)
 
 
     // exécute la requête
