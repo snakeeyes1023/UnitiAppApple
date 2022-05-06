@@ -10,6 +10,9 @@ struct LoyerCreationView: View {
 
     @StateObject var locationManager = LocationManager()
 
+    @Environment(\.dismiss) private var dismiss
+    let generator = UINotificationFeedbackGenerator()
+
     var id : Int = -1;
     
     @State var nom: String = "";
@@ -17,7 +20,8 @@ struct LoyerCreationView: View {
     @State var grandeur: Double = 3.5;
     @State var longitude: String = "" //String(locationManager.lastLocation?.coordinate.longitude ?? 0);
     @State var lattitude: String = "" //String(locationManager.lastLocation?.coordinate.latitude ?? 0);
-    
+    @State private var showingAlert = false
+
 
     var body: some View {
         VStack{
@@ -34,6 +38,9 @@ struct LoyerCreationView: View {
                             .cornerRadius(10)
                         
                            Form {
+                                .alert("Erreur", isPresented: $showingAlert) {
+                                    Text(id == 0 ? "Impossible de créer le loyer" :"Impossible d'applicer les modifications.")
+                                }
                                Section(header: Text("Général")) {
                                    TextField("Nom", text: $nom)
                                    TextField("Prix", value: $prix, format: .number)
@@ -64,7 +71,14 @@ struct LoyerCreationView: View {
                                            }
                                            
                                            // Si la création a réussi, on affiche un message de confirmation
-
+                                            if(result){
+                                                dismiss()
+                                                self.generator.notificationOccurred(.success)
+                                            }
+                                            else{
+                                                self.generator.notificationOccurred(.error)
+                                                showingAlert = true
+                                            }
                                           
                                        }) {
                                            Text(id == -1 ? "Ajouter le loyer" : "Modifier le loyer")
@@ -79,5 +93,17 @@ struct LoyerCreationView: View {
                 
             }
         }
+         .toolbar(content: {
+        ToolbarItem(placement: .navigationBarLeading, content: {
+            Button(action: {
+            dismiss()
+        }) {
+          HStack {
+            Image(systemName: "arrow.uturn.backward")
+            Text("Retour")
+          }
+        }
+      })
+    }) 
     }
 

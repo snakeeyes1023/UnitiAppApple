@@ -64,10 +64,8 @@ struct ContentView: View {
         .navigationBarTitle("Jonathan Côté", displayMode: .inline)
         .padding()
         .onAppear {
-            if(!initialDonnees){
-                initialDonnees = true
-                loyers = gestionBD.listeLoyers();
-            }
+            loyers = gestionBD.listeLoyers();
+
         }
     }
     }

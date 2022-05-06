@@ -190,6 +190,11 @@ func supprimerLoyer(id : Int) -> Bool
   return resultat
 }
 
+/**
+  Modifier un loyer dans la base de données.
+
+ - Returns: True si la modification a réussi, False sinon.
+*/
 func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double, longitude: String, lattitude: String) -> Bool
 {
   let requete: String = "UPDATE loyers SET nom = ?, prix = ?, grandeur = ?, longitude = ?, lattitude = ? WHERE id = ?"
@@ -224,4 +229,44 @@ func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double, longitu
   return resultat
 
 }
+
+  /*
+  Toggle disponibilité d'un loyer dans la base de données.
+
+  - Returns: True si la modification a réussi, False sinon.
+  */
+  func toggleDispo(id : Int, nVal : Bool) -> Bool
+  {
+    var requete: String = ""
+    if nVal {
+      requete = "UPDATE loyers SET dispo = 1 WHERE id = ?"
+    } else {
+      requete = "UPDATE loyers SET dispo = 0 WHERE id = ?"
+    }
+
+    var preparation: OpaquePointer? = nil
+    var resultat: Bool = false
+    // prépare la requête
+    if sqlite3_prepare_v2(pointeurBD, requete, -1, &preparation, nil) == SQLITE_OK {
+
+      // ajoute les paramètres
+      sqlite3_bind_int(preparation, 1, Int32(id))
+
+      // exécute la requête
+      if sqlite3_step(preparation) == SQLITE_DONE {
+        print("Loyer modifié")
+        resultat = true
+      } else {
+        let erreur = String(cString: sqlite3_errmsg(pointeurBD))
+        print("\nLa requête n'a pas pu être exécutée : \(erreur)")
+      }
+    } else {
+      let erreur = String(cString: sqlite3_errmsg(pointeurBD))
+      print("\nLa requête n'a pas pu être préparée : \(erreur)")
+    }
+
+    // libération de la mémoire
+    sqlite3_finalize(preparation)
+    return resultat
+  }
 }

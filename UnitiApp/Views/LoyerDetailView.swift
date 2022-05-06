@@ -11,20 +11,23 @@ struct LoyerDetailView: View {
     var loyer: Loyer;
     @Binding var gestionBD: GestionBD;
     @State private var action: Int? = 0
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
    
         VStack{
 
             ZStack(){
-                NavigationLink(destination: LoyerCreationView(gestionBD: $gestionBD,
-                                                              id: loyer.id,
-                                                              nom: loyer.nom,
-                                                              prix : loyer.prix,
-                                                              grandeur: loyer.grandeur,
-                                                              longitude: loyer.longitude,
-                                                              lattitude: loyer.lattitude
-                                                              ), tag: 1, selection: $action) {
+                NavigationLink(destination: LoyerCreationView(
+                    gestionBD: $gestionBD,
+                    id: loyer.id,
+                    nom: loyer.nom,
+                    prix : loyer.prix,
+                    grandeur: loyer.grandeur,
+                    longitude: loyer.longitude,
+                    lattitude: loyer.lattitude
+                    ), tag: 1, selection: $action) {
+
                     EmptyView()
                     
                 }
@@ -52,27 +55,49 @@ struct LoyerDetailView: View {
                         Text("grandeur : " + String(loyer.grandeur))
                     }
 
-                    Spacer()
-                    
-                    HStack{
-                        // button toggle active
-                        Button(action: {
-                            //self.gestionBD.loyerToggle(id: self.loyer.id, active: !self.loyer.dispo)
-                            //self.loyer.dispo = !self.loyer.dispo
-                        }) {
-                            Text(loyer.dispo ? "Mettre non disponnible" : "Mettre disponnible")
-                        }
-                        
-                        Text("Modifier").onTapGesture {
-                            self.action = 1
-                        }
-                    }
-
-                                                                              
+                    Spacer()                                                                              
                 }
             }.padding(10)             
             
         }
+        .toolbar(content: {
+        ToolbarItem(placement: .navigationBarLeading, content: {
+            Button(action: {
+            dismiss()
+        }) {
+          HStack {
+            Image(systemName: "arrow.uturn.backward")
+            Text("Retour")
+          }
+        }
+      })
+
+          ToolbarItem(placement: .navigationBarTrailing, content: {
+            Menu {
+    Button(action: {
+         self.gestionBD.toggleDispo(id: self.loyer.id, nVal: !self.loyer.dispo)
+        self.loyer.dispo = !self.loyer.dispo
+    }) {
+        Label(loyer.dispo ? "Mettre non disponnible" : "Mettre disponnible", systemImage: "nom.icone")
+    }
+} label: {
+    Image(systemName: "text.justify")
+        .foregroundColor(.black)
+}
+
+  Button(action: {
+                                    self.action = 1
+
+    }) {
+        Label("Modifier", systemImage: "pencil.tip")
+    }
+} label: {
+    Image(systemName: "text.justify")
+        .foregroundColor(.black)
+}
+
+        })
+    }) 
     }
         
     }
