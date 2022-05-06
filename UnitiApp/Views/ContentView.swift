@@ -40,14 +40,14 @@ struct ContentView: View {
                      if gestionBD.pointeurBD == nil {
                         Text("Un problème empêche l'ouverture de la base de données.")
                     } else {
-
-                        ForEach($loyers) { $loyer in
-                            //naviation link
-                            NavigationLink(destination: LoyerDetailView(loyer: loyer, gestionBD: $gestionBD)) {
-                                TextField("Nom", text: $loyer.nom)
+                        List {
+                            ForEach($loyers) { $loyer in
+                                NavigationLink(destination: LoyerDetailView(loyer: loyer, gestionBD: $gestionBD)) {
+                                Text($loyer.nom)
+                                }
                             }
-                        }
                         .onDelete(perform: deleteLoyer)
+                        }       
                     }
                 }
         }
