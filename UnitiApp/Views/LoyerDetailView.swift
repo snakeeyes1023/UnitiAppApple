@@ -10,8 +10,6 @@ struct LoyerDetailView: View {
         
     var loyer: Loyer;
     @Binding var gestionBD: GestionBD;
-    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 51.507222, longitude: -0.1275), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
-
     
     var body: some View {
         VStack{
@@ -31,8 +29,6 @@ struct LoyerDetailView: View {
                     .frame(width: 255 , height: 128)
                     .clipShape(RoundedRectangle(cornerRadius: 25))                    
                     
-                     Map(coordinateRegion: $region)
-                        .frame(width: 400, height: 300)
                         
                     Spacer()
 

@@ -98,9 +98,7 @@ func listeLoyers() -> [Loyer] {
       let longitude = String(cString: sqlite3_column_text(preparation, 5))
       let lattitude = String(cString: sqlite3_column_text(preparation, 6))
 
-
-
-      loyers.append(Loyer(id: id, nom: nom, grandeur: grandeur, prix: prix, uuid: uuid, dispo: dispo, longitude: longitude, lattitude: lattitude))
+      loyers.append(Loyer(id: id, nom: nom, grandeur: grandeur, longitude: longitude, lattitude: lattitude, prix: prix, uuid: uuid, dispo: dispo))
     }
   } else {
     let erreur = String(cString: sqlite3_errmsg(pointeurBD))
@@ -118,7 +116,7 @@ func listeLoyers() -> [Loyer] {
 
  - Returns: True si l'ajout a réussi, False sinon.
 */
-func ajouterLoyer(nom: String, grandeur: Double, prix: Double, longitude: longitude, lattitude: lattitude) -> Bool {
+func ajouterLoyer(nom: String, grandeur: Double, prix: Double, longitude: String, lattitude: String) -> Bool {
   var reussi: Bool = false
   //generer uuid
   let uuid = UUID().uuidString
@@ -134,9 +132,9 @@ func ajouterLoyer(nom: String, grandeur: Double, prix: Double, longitude: longit
     sqlite3_bind_double(preparation, 1, grandeur)
     sqlite3_bind_double(preparation, 2, prix)
     sqlite3_bind_text(preparation, 3, uuid, -1, nil)
-    sqlite3_bind_int(preparation, 5, 1)
-    sqlite3_bind_text(preparation, 6, longitude, -1, nil)
-    sqlite3_bind_text(preparation, 7, lattitude, -1, nil)
+    sqlite3_bind_int(preparation, 4, 1)
+    sqlite3_bind_text(preparation, 5, longitude, -1, nil)
+    sqlite3_bind_text(preparation, 6, lattitude, -1, nil)
 
 
     // exécute la requête
@@ -192,7 +190,7 @@ func supprimerLoyer(id : Int) -> Bool
   return resultat
 }
 
-func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double, longitude: longitude, lattitude: lattitude) -> Bool
+func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double, longitude: String, lattitude: String) -> Bool
 {
   let requete: String = "UPDATE loyers SET nom = ?, prix = ?, grandeur = ? WHERE id = ?"
   var preparation: OpaquePointer? = nil
