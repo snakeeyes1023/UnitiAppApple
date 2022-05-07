@@ -2,13 +2,13 @@
 //  LoyerDetailView.swift
 //
 import SwiftUI
+import CoreLocation
+import CoreLocationUI
 
 
 struct LoyerCreationView: View {
 
     @Binding var gestionBD: GestionBD;
-
-    @StateObject var locationManager = LocationManager()
 
     @Environment(\.dismiss) private var dismiss
     let generator = UINotificationFeedbackGenerator()
@@ -18,8 +18,8 @@ struct LoyerCreationView: View {
     @State var nom: String = "";
     @State var prix: Double = 0;
     @State var grandeur: Double = 3.5;
-    @State var longitude: String = "" //String(locationManager.lastLocation?.coordinate.longitude ?? 0);
-    @State var lattitude: String = "" //String(locationManager.lastLocation?.coordinate.latitude ?? 0);
+    @State var longitude: String = ""
+    @State var lattitude: String = ""
     @State private var showingAlert = false
 
 
@@ -29,18 +29,10 @@ struct LoyerCreationView: View {
             if gestionBD.pointeurBD == nil {
                 Text("Un problème empêche l'ouverture de la base de données.")
             } else {
-                
-                NavigationView {
-                    ZStack(){
-                        Rectangle()
-                            .fill(Color.gray)
-                            .opacity(0.09)
-                            .cornerRadius(10)
+                        
                         
                            Form {
-                                .alert("Erreur", isPresented: $showingAlert) {
-                                    Text(id == 0 ? "Impossible de créer le loyer" :"Impossible d'applicer les modifications.")
-                                }
+                                
                                Section(header: Text("Général")) {
                                    TextField("Nom", text: $nom)
                                    TextField("Prix", value: $prix, format: .number)
@@ -53,14 +45,18 @@ struct LoyerCreationView: View {
                                }
                                
                                Section(header: Text("Position")) {
+                                   LocationButton {
+                                       longitude = CLLocationManager().location?.coordinate.longitude.description ?? ""
+                                       lattitude = CLLocationManager().location?.coordinate.latitude.description ?? ""
+                                   }
+                                   .frame(height: 44)
+                                   
                                    TextField("Longitude", text: $longitude)
                                    TextField("Lattitude", text: $lattitude)
                                }
                                
                                Section {
-                                   
-                               if nom != "" && grandeur != 0.0 && prix != 0.0 && longitude != "" && lattitude != "" {
-                                       Button(action: {
+                                    Button(action: {
                                            var result : Bool = false;
 
                                            // Création d'un nouveau loyer si le id n'est pas défini
@@ -82,18 +78,20 @@ struct LoyerCreationView: View {
                                           
                                        }) {
                                            Text(id == -1 ? "Ajouter le loyer" : "Modifier le loyer")
-                                       }
-                                   }
+                                       }.disabled(!(nom != "" && grandeur != 0.0 && prix != 0.0 && longitude != "" && lattitude != ""))
+                                   
                                }
                            }
-                           .navigationBarTitle("Jonathan Côté")
-                       }
-                }
+                           .alert("Erreur", isPresented: $showingAlert) {
+                               Text(id == -1 ? "Impossible de créer le loyer" :"Impossible d'applicer les modifications.")
+                           }
+                       
+                
                 }
                 
             }
-        }
-         .toolbar(content: {
+        .navigationBarBackButtonHidden(true)
+        .toolbar(content: {
         ToolbarItem(placement: .navigationBarLeading, content: {
             Button(action: {
             dismiss()
@@ -104,6 +102,12 @@ struct LoyerCreationView: View {
           }
         }
       })
-    }) 
-    }
+            
+            ToolbarItem(placement: .principal, content: {
+                Text(id == -1 ? "Créer un loyer" : "Modifier un loyer")
+                    
+          })
+    })
+  }
+}
 

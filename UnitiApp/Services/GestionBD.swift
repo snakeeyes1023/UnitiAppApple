@@ -95,8 +95,8 @@ func listeLoyers() -> [Loyer] {
       let prix = Double(sqlite3_column_double(preparation, 3))
       let uuid = String(cString: sqlite3_column_text(preparation, 4))
       let dispo = Int(sqlite3_column_int(preparation, 5)) == 1
-      let longitude = String(cString: sqlite3_column_text(preparation, 5))
-      let lattitude = String(cString: sqlite3_column_text(preparation, 6))
+      let longitude = String(cString: sqlite3_column_text(preparation, 6))
+      let lattitude = String(cString: sqlite3_column_text(preparation, 7))
 
       loyers.append(Loyer(id: id, nom: nom, grandeur: grandeur, longitude: longitude, lattitude: lattitude, prix: prix, uuid: uuid, dispo: dispo))
     }
@@ -204,12 +204,13 @@ func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double, longitu
   if sqlite3_prepare_v2(pointeurBD, requete, -1, &preparation, nil) == SQLITE_OK {
 
     // ajoute les paramètres
-    sqlite3_bind_text(preparation, 1, nom, -1, nil)
+    sqlite3_bind_text(preparation, 1, NSString(string: nom).utf8String, -1, nil)
+
     sqlite3_bind_double(preparation, 2, prix)
     sqlite3_bind_double(preparation, 3, grandeur)
-    sqlite3_bind_text(preparation, 4, longitude, -1, nil)
-    sqlite3_bind_text(preparation, 5, lattitude, -1, nil)
-      sqlite3_bind_int(preparation, 6, Int32(id))
+    sqlite3_bind_text(preparation, 4, NSString(string: longitude).utf8String, -1, nil)
+    sqlite3_bind_text(preparation, 5, NSString(string: lattitude).utf8String, -1, nil)
+    sqlite3_bind_int(preparation, 6, Int32(id))
 
     // exécute la requête
     if sqlite3_step(preparation) == SQLITE_DONE {

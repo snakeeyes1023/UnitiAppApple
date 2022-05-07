@@ -24,7 +24,7 @@ struct ContentView: View {
     }
     
     var body: some View {
-        if (authentification.statut == .authentifie) {
+        if (authentification.statut == .nonAuthentifie) {
             Text("Vous devez être authentifié pour accéder à cette application.")
                 .padding()
         }
@@ -46,7 +46,8 @@ struct ContentView: View {
                                     HStack {
                                       Image(systemName: "house")
                                       Text("-")
-                                      Text(loyer.nom)
+
+                                        Text(loyer.nom)
                                             .foregroundColor(.primary)
                                     }
                                 }
@@ -56,13 +57,26 @@ struct ContentView: View {
                     }
                 
         }
-        .navigationBarItems(leading: EditButton(), trailing: Text("Ajouter").foregroundColor(.blue)
-        .onTapGesture {
-            self.action = 1
-        })
-            
-        .navigationBarTitle("Jonathan Côté", displayMode: .inline)
-        .padding()
+            .toolbar(content: {
+            ToolbarItem(placement: .navigationBarLeading, content: {
+                EditButton()
+            })
+                
+                ToolbarItem(placement: .principal, content: {
+                    Text("Jonathan Côté")
+              })
+                
+                ToolbarItem(placement: .navigationBarTrailing, content: {
+                    Button(action: {
+                    self.action = 1
+                }) {
+                  HStack {
+                    Image(systemName: "plus.app.fill")
+                    Text("Ajouter")
+                  }
+                }
+              })
+            })
         .onAppear {
             loyers = gestionBD.listeLoyers();
 

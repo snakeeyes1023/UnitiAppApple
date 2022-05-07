@@ -8,7 +8,7 @@ import SwiftUI
 
 struct LoyerDetailView: View {
         
-    var loyer: Loyer;
+    @State var loyer: Loyer;
     @Binding var gestionBD: GestionBD;
     @State private var action: Int? = 0
     @Environment(\.dismiss) private var dismiss
@@ -26,7 +26,7 @@ struct LoyerDetailView: View {
                     grandeur: loyer.grandeur,
                     longitude: loyer.longitude,
                     lattitude: loyer.lattitude
-                    ), tag: 1, selection: $action) {
+                ), tag: 1, selection: $action) {
 
                     EmptyView()
                     
@@ -60,6 +60,7 @@ struct LoyerDetailView: View {
             }.padding(10)             
             
         }
+        .navigationBarBackButtonHidden(true)
         .toolbar(content: {
         ToolbarItem(placement: .navigationBarLeading, content: {
             Button(action: {
@@ -71,30 +72,31 @@ struct LoyerDetailView: View {
           }
         }
       })
+            
+        ToolbarItem(placement: .principal, content: {
+                Text("Mon loyer")
+          })
 
           ToolbarItem(placement: .navigationBarTrailing, content: {
             Menu {
     Button(action: {
-         self.gestionBD.toggleDispo(id: self.loyer.id, nVal: !self.loyer.dispo)
+        gestionBD.toggleDispo(id: loyer.id, nVal: !loyer.dispo)
         self.loyer.dispo = !self.loyer.dispo
     }) {
-        Label(loyer.dispo ? "Mettre non disponnible" : "Mettre disponnible", systemImage: "nom.icone")
+        Label(loyer.dispo ? "Mettre non disponnible" : "Mettre disponnible", systemImage: loyer.dispo ? "plus.app" : "plus.app.fill")
     }
+                
+    Button(action: {
+       self.action = 1
+        }) {
+            Label("Modifier", systemImage: "pencil.tip")
+    }
+              
 } label: {
     Image(systemName: "text.justify")
-        .foregroundColor(.black)
+    .foregroundColor(.primary)
 }
 
-  Button(action: {
-                                    self.action = 1
-
-    }) {
-        Label("Modifier", systemImage: "pencil.tip")
-    }
-} label: {
-    Image(systemName: "text.justify")
-        .foregroundColor(.black)
-}
 
         })
     }) 
