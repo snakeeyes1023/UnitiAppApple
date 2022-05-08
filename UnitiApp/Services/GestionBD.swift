@@ -138,13 +138,14 @@ class GestionBD {
     if sqlite3_prepare_v2(pointeurBD, requete, -1, &preparation, nil) == SQLITE_OK {
 
       // ajoute les paramètres
-      sqlite3_bind_text(preparation, 1, nom, -1, nil)
+      sqlite3_bind_text(preparation, 1, NSString(string: nom).utf8String, -1, nil)
       sqlite3_bind_double(preparation, 2, grandeur)
       sqlite3_bind_double(preparation, 3, prix)
-      sqlite3_bind_text(preparation, 4, uuid, -1, nil)
+      sqlite3_bind_text(preparation, 4, NSString(string: uuid).utf8String, -1, nil)
       sqlite3_bind_int(preparation, 5, 1)
-      sqlite3_bind_text(preparation, 6, longitude, -1, nil)
-      sqlite3_bind_text(preparation, 7, lattitude, -1, nil)
+      sqlite3_bind_text(preparation, 6, NSString(string: longitude).utf8String, -1, nil)
+      sqlite3_bind_text(preparation, 7, NSString(string: lattitude).utf8String, -1, nil)
+
 
       // exécute la requête
       if sqlite3_step(preparation) == SQLITE_DONE {
@@ -325,30 +326,34 @@ class GestionBD {
   */
   func synchroniserLoyers() async {
 
-    let donneesJSON = try! JSONEncoder().encode(listeLoyers())
+    do {
+          
+        let donneesJSON = try JSONEncoder().encode(listeLoyers())
 
-    let chaineURL = "https://unitiMobile.jonathancote.ca/synchro-loyers.php"
+        let chaineURL = "https://unitiMobile.jonathancote.ca/synchro-loyers.php"
 
-    guard let url = URL(string: chaineURL) else {
-      print("URL invalide : \(chaineURL)")
-      return
-    }
+        guard let url = URL(string: chaineURL) else {
+            print("URL invalide : \(chaineURL)")
+            return
+        }
 
-    // configure la requête HTTP
-    var request = URLRequest(url: url)
-    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-    request.setValue("application/json", forHTTPHeaderField: "Accept")
-    request.httpMethod = "POST"
-    request.httpBody = donneesJSON
+        // configure la requête HTTP
+        var request = URLRequest(url: url)
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.httpMethod = "POST"
+        request.httpBody = donneesJSON
 
-    // lance la requête HTTP
-    let (data, response) = try! await URLSession.shared.data(for: request)
-
-    // affiche les données reçues
-    if let donnees = String(data: data, encoding: .utf8) {
-      print(donnees)
-    }
-
-    print(response)
+        // lance la requête HTTP
+        let (data, response) = try await URLSession.shared.data(for: request)
+      
+        // affiche les données reçues
+        if let donnees = String(data: data, encoding: .utf8) {
+            print(donnees)
+            print(response)
+        }
+      } catch {
+          print("Aucune connexion établie")
+      }
   }
 }
