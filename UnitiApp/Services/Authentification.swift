@@ -1,3 +1,10 @@
+//
+//  Authentification.swift
+//  Jonathan Côté
+//
+//  Code des notes de cours BD apical
+//
+
 import Foundation
 import LocalAuthentication
 
@@ -13,7 +20,6 @@ class Authentification: ObservableObject {
   var error: NSError?
 
   init() {
-    // Avec .deviceOwnerAuthentication (plutôt que .deviceOwnerAuthenticationWithBiometrics), demandera une authentification par code si Face ID n'est pas disponible.
     if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) {
       
       let justificationSiFaceIDNonDisponible = "Vous devez vous authentifier pour accéder à cette application."

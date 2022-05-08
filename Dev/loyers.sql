@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : Dim 08 mai 2022 à 09:48
+-- Généré le : Dim 08 mai 2022 à 12:12
 -- Version du serveur :  10.3.34-MariaDB-cll-lve
 -- Version de PHP : 7.3.33
 
@@ -38,6 +38,26 @@ CREATE TABLE `loyers` (
   `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dispo` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `loyers`
+--
+ALTER TABLE `loyers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `loyers`
+--
+ALTER TABLE `loyers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

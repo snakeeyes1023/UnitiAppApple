@@ -15,6 +15,7 @@ struct LoyerDetailView: View {
     @State var loyer: Loyer = Loyer(id: 0, nom: "", grandeur: 0, longitude: "", lattitude: "", prix: 0, uuid: "", dispo: false);
     @State private var action: Int? = 0
     @Environment(\.dismiss) private var dismiss
+    let generator = UINotificationFeedbackGenerator()
 
     var body: some View {
    
@@ -83,10 +84,18 @@ struct LoyerDetailView: View {
         ToolbarItem(placement: .navigationBarTrailing, content: {
         Menu {
             Button(action: {
-                gestionBD.toggleDispo(id: loyer.id, nVal: !loyer.dispo)
-                self.loyer.dispo = !self.loyer.dispo
-                Task{
-                    await gestionBD.synchroniserLoyers()
+
+                if(gestionBD.toggleDispo(id: loyer.id, nVal: !loyer.dispo)
+                {
+                    generator.notificationOccurred(.success))
+                    self.loyer.dispo = !self.loyer.dispo
+
+                    Task{
+                        await gestionBD.synchroniserLoyers()
+                    }
+                }
+                else{
+                    generator.notificationOccurred(.error)){
                 }
             }) {
             Label(loyer.dispo ? "Mettre non disponnible" : "Mettre disponnible", systemImage: loyer.dispo ? "plus.app" : "plus.app.fill")
