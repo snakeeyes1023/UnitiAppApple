@@ -21,6 +21,8 @@ struct ContentView: View {
   @State var loyers: [Loyer] = [Loyer]()
   @State private var action: Int? = 0
 
+    
+    @State var modifEnCours = false
 
   init() {
     gestionBD.ouvrirBD()
@@ -70,18 +72,28 @@ struct ContentView: View {
                 }
               }
               .onDelete(perform: supprimerLoyer)
-            }.environment(\.defaultMinListRowHeight, hauteurItem)
+            }
+            .environment(\.defaultMinListRowHeight, hauteurItem)
+            .environment(\.editMode, .constant(self.modifEnCours ? EditMode.active : EditMode.inactive))
+                                  
+              
+            .alert("Erreur", isPresented: $afficherAlerte) {
+               Text("Une erreur est survenue.")
+            }
           }
-          .alert("Erreur", isPresented: $afficherAlerte) {
-            Text("Une erreur est survenue.")
-          }
+
 
         }
         .toolbar(content: {
           ToolbarItem(
             placement: .navigationBarLeading,
             content: {
-              EditButton()
+                Button(action: {
+                    self.modifEnCours.toggle()
+                }) {
+                    Text(modifEnCours ? "Terminer" : "Modifier")
+                        
+                }
             })
 
           ToolbarItem(

@@ -41,27 +41,61 @@ struct LoyerDetailView: View {
                     .cornerRadius(10)
                 
                 VStack(){
-                    AsyncImage(url: URL(string: "https://images.unsplash.com/photo-1604251806132-6b149e8e6730?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80.png")) { image in
+                    AsyncImage(url: URL(string: "https://source.unsplash.com/random/?apartement")) { image in
                         image.resizable()
                     } placeholder: {
                         Color.gray
                     }
-                    .frame(width: 255 , height: 128)
-                    .clipShape(RoundedRectangle(cornerRadius: 25))                    
+                    .frame(height: 150, alignment: .center)
+                    .clipShape(RoundedRectangle(cornerRadius: 25))
+                    .padding()
                                            
                     VStack(alignment: .leading, spacing: 6) {      
-                        Text("nom : " + loyer.nom)
+                        Text(loyer.nom).modifier(TexteTitre())
                     }
                     
                     Spacer()
 
-                    VStack(){
-                        Text("grandeur : " + String(loyer.grandeur))
-                    }
-
-                    Spacer()                                                                              
+                    VStack(alignment: .leading){
+ 
+                        HStack(){
+                            Text("Grandeur").modifier(TexteTag())
+                            Spacer()
+                            Text(String(loyer.grandeur))
+                        }.padding()
+                        
+                        HStack(){
+                            Text("Longitude").modifier(TexteTag())
+                            Spacer()
+                            Text(loyer.longitude)
+                        }.padding()
+                        
+                        HStack(){
+                            Text("Lattitude").modifier(TexteTag())
+                            Spacer()
+                            Text(loyer.lattitude)
+                        }.padding()
+                        
+                        HStack(){
+                            Text("Dispo").modifier(TexteTag())
+                            Spacer()
+                            if loyer.dispo {
+                              Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                                
+                                Text("Disponnible")
+                            } else {
+                              Image(systemName: "xmark.circle.fill")
+                                .foregroundColor(.red)
+                                Text("Non disponnible")
+                            }
+                        }.padding()
+                        
+                    }.padding(5)
+                    
+                    Spacer()
                 }
-            }.padding(10)             
+            }
             
         }
         .navigationBarBackButtonHidden(true)
@@ -85,9 +119,8 @@ struct LoyerDetailView: View {
         Menu {
             Button(action: {
 
-                if(gestionBD.toggleDispo(id: loyer.id, nVal: !loyer.dispo)
-                {
-                    generator.notificationOccurred(.success))
+                if(gestionBD.toggleDispo(id: loyer.id, nVal: !loyer.dispo)) {
+                    generator.notificationOccurred(.success)
                     self.loyer.dispo = !self.loyer.dispo
 
                     Task{
@@ -95,7 +128,7 @@ struct LoyerDetailView: View {
                     }
                 }
                 else{
-                    generator.notificationOccurred(.error)){
+                    generator.notificationOccurred(.error)
                 }
             }) {
             Label(loyer.dispo ? "Mettre non disponnible" : "Mettre disponnible", systemImage: loyer.dispo ? "plus.app" : "plus.app.fill")
@@ -118,4 +151,19 @@ struct LoyerDetailView: View {
             loyer = gestionBD.obtenirLoyer(id : loyerId)!;
         }
     }        
+}
+
+
+struct TexteTitre: ViewModifier {
+  func body(content: Content) -> some View {
+    return content
+          .font(.system(size: 25, weight: .bold, design: .default))
+  }
+}
+
+struct TexteTag: ViewModifier {
+  func body(content: Content) -> some View {
+    return content
+        .font(.system(size: 15, weight: .bold, design: .default))
+  }
 }
