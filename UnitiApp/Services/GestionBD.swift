@@ -312,6 +312,13 @@ func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double, longitu
 
     let donneesJSON = try! JSONEncoder().encode(listeLoyers())
 
+    let chaineURL = "https://unitiMobile.jonathancote.ca/synchro-loyers.php"
+
+    guard let url = URL(string: chaineURL) else {
+      messageErreur = "Un problème empêche de retrouver l'image (code 1)."
+      print("URL invalide : \(chaineURL)")
+      return
+    }
 
     // configure la requête HTTP
     var request = URLRequest(url: url)
