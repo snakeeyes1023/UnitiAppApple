@@ -8,6 +8,7 @@ import SwiftUI
 
 struct LoyerDetailView: View {
         
+    @State var loyerId: Int;
     @State var loyer: Loyer;
     @Binding var gestionBD: GestionBD;
     @State private var action: Int? = 0
@@ -65,41 +66,42 @@ struct LoyerDetailView: View {
         ToolbarItem(placement: .navigationBarLeading, content: {
             Button(action: {
             dismiss()
-        }) {
-          HStack {
-            Image(systemName: "arrow.uturn.backward")
-            Text("Retour")
-          }
-        }
-      })
+            }) {
+                HStack {
+                    Image(systemName: "arrow.uturn.backward")
+                    Text("Retour")
+                }
+                }
+            })
             
         ToolbarItem(placement: .principal, content: {
-                Text("Mon loyer")
-          })
+            Text("Mon loyer")
+        })
 
-          ToolbarItem(placement: .navigationBarTrailing, content: {
-            Menu {
-    Button(action: {
-        gestionBD.toggleDispo(id: loyer.id, nVal: !loyer.dispo)
-        self.loyer.dispo = !self.loyer.dispo
-    }) {
-        Label(loyer.dispo ? "Mettre non disponnible" : "Mettre disponnible", systemImage: loyer.dispo ? "plus.app" : "plus.app.fill")
-    }
+        ToolbarItem(placement: .navigationBarTrailing, content: {
+        Menu {
+            Button(action: {
+                gestionBD.toggleDispo(id: loyer.id, nVal: !loyer.dispo)
+                self.loyer.dispo = !self.loyer.dispo
+            }) {
+            Label(loyer.dispo ? "Mettre non disponnible" : "Mettre disponnible", systemImage: loyer.dispo ? "plus.app" : "plus.app.fill")
+            }
                 
-    Button(action: {
-       self.action = 1
-        }) {
+            Button(action: {
+                self.action = 1
+            }) {
             Label("Modifier", systemImage: "pencil.tip")
-    }
-              
-} label: {
-    Image(systemName: "text.justify")
-    .foregroundColor(.primary)
-}
+        }             
+        } label: {
+            Image(systemName: "text.justify")
+            .foregroundColor(.primary)
+        }
 
 
         })
-    }) 
-    }
-        
-    }
+        }) 
+        .onAppear {
+            loyer = gestionBD.obtenirLoyer(loyerId);
+        }
+    }        
+}

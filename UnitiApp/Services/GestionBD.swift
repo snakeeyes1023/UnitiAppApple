@@ -8,7 +8,7 @@
 import Foundation
 import SQLite3
 import SwiftUI
-
+//BD en ligne = 2$5(5_S(-8%K
 /// Gestion d'une base de données SQLite.
 /// Code des notes de cours BD apical
 class GestionBD {
@@ -270,4 +270,65 @@ func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double, longitu
     sqlite3_finalize(preparation)
     return resultat
   }
+
+  func obtenirLoyer(id: Int) -> Loyer?
+  {
+    let requete: String = "SELECT id, nom, grandeur, prix, uuid, dispo, longitude, lattitude FROM loyers WHERE id = ?"
+    var preparation: OpaquePointer? = nil
+    var resultat: Loyer? = nil
+    // prépare la requête
+    if sqlite3_prepare_v2(pointeurBD, requete, -1, &preparation, nil) == SQLITE_OK {
+
+      // ajoute les paramètres
+      sqlite3_bind_int(preparation, 1, Int32(id))
+
+      // exécute la requête
+      if sqlite3_step(preparation) == SQLITE_ROW {
+        let id = Int(sqlite3_column_int(preparation, 0))
+        let nom = String(cString: sqlite3_column_text(preparation, 1))
+        let prix = Double(sqlite3_column_double(preparation, 2))
+        let grandeur = Double(sqlite3_column_double(preparation, 3))
+        let longitude = String(cString: sqlite3_column_text(preparation, 4))
+        let lattitude = String(cString: sqlite3_column_text(preparation, 5))
+        let dispo = Bool(sqlite3_column_int(preparation, 6))
+
+        resultat = Loyer(id: id, nom: nom, prix: prix, grandeur: grandeur, longitude: longitude, lattitude: lattitude, dispo: dispo)
+      } else {
+        let erreur = String(cString: sqlite3_errmsg(pointeurBD))
+        print("\nLa requête n'a pas pu être exécutée : \(erreur)")
+      }
+    } else {
+      let erreur = String(cString: sqlite3_errmsg(pointeurBD))
+      print("\nLa requête n'a pas pu être préparée : \(erreur)")
+    }
+
+    // libération de la mémoire
+    sqlite3_finalize(preparation)
+    return resultat
+  }
+
+  //Syncronisation des loyers
+  func synchroniserLoyers() -> Bool {
+
+    let donneesJSON = try! JSONEncoder().encode(listeLoyers())
+
+
+    // configure la requête HTTP
+    var request = URLRequest(url: url)
+    request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    request.setValue("application/json", forHTTPHeaderField: "Accept")
+    request.httpMethod ="POST"
+    request.httpBody = donneesJSON
+
+    // lance la requête HTTP
+    let (data, response) = try await URLSession.shared.data(for: request)
+
+    // affiche les données reçues
+    if let donnees = String(data: data, encoding: .utf8) {
+      print(donnees)
+    }
+
+    print(response)
+
+    return true
 }

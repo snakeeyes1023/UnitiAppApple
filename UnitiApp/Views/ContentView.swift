@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @AppStorage("hauteurItem") var hauteurItem: Double = 0.0
+
     @ObservedObject var authentification: Authentification = Authentification()
 
     @State var gestionBD: GestionBD = GestionBD(nomBD: "gestionloyer.db")
@@ -42,14 +44,23 @@ struct ContentView: View {
                         
                         List {
                             ForEach(loyers) { loyer in
-                                NavigationLink(destination: LoyerDetailView(loyer: loyer, gestionBD: $gestionBD)) {
+                                NavigationLink(destination: LoyerDetailView(loyerId: loyer.id, gestionBD: $gestionBD)) {
                                     HStack {
-                                      Image(systemName: "house")
+                                        //satus color
+                                        if loyer.dispo {
+                                            Image(systemName: "checkmark.circle.fill")
+                                                .foregroundColor(.green)
+                                        } else {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .foregroundColor(.red)
+                                        }
+                                                
                                       Text("-")
 
-                                        Text(loyer.nom)
-                                            .foregroundColor(.primary)
-                                    }
+                                      Text(loyer.nom)
+                                        .foregroundColor(.primary)
+                                    }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, hauteurItem: , alignment: .topLeading)
+
                                 }
                         }
                         .onDelete(perform: deleteLoyer)
@@ -58,13 +69,13 @@ struct ContentView: View {
                 
         }
             .toolbar(content: {
-            ToolbarItem(placement: .navigationBarLeading, content: {
-                EditButton()
-            })
+                ToolbarItem(placement: .navigationBarLeading, content: {
+                    EditButton()
+                })
                 
                 ToolbarItem(placement: .principal, content: {
                     Text("Jonathan Côté")
-              })
+                })
                 
                 ToolbarItem(placement: .navigationBarTrailing, content: {
                     Button(action: {
@@ -74,6 +85,18 @@ struct ContentView: View {
                     Image(systemName: "plus.app.fill")
                     Text("Ajouter")
                   }
+                }
+
+                ToolbarItem(placement: .bottomBar) {
+                    Button("-") {
+                        hauteurItem = hauteurItem - 1
+                    }
+
+                    Spacer()
+
+                    Button("+") {
+                        hauteurItem = hauteurItem + 1
+                    }
                 }
               })
             })

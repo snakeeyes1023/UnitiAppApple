@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct Loyer : Identifiable {
+struct Loyer : Identifiable, Codable {
     var id : Int;
     var nom : String;
     var grandeur : Double;
