@@ -9,8 +9,10 @@ import SwiftUI
 struct LoyerDetailView: View {
         
     @State var loyerId: Int;
-    @State var loyer: Loyer;
     @Binding var gestionBD: GestionBD;
+
+    
+    @State var loyer: Loyer = Loyer(id: 0, nom: "", grandeur: 0, longitude: "", lattitude: "", prix: 0, uuid: "", dispo: false);
     @State private var action: Int? = 0
     @Environment(\.dismiss) private var dismiss
 
@@ -83,6 +85,9 @@ struct LoyerDetailView: View {
             Button(action: {
                 gestionBD.toggleDispo(id: loyer.id, nVal: !loyer.dispo)
                 self.loyer.dispo = !self.loyer.dispo
+                Task{
+                    await gestionBD.synchroniserLoyers()
+                }
             }) {
             Label(loyer.dispo ? "Mettre non disponnible" : "Mettre disponnible", systemImage: loyer.dispo ? "plus.app" : "plus.app.fill")
             }
@@ -101,7 +106,7 @@ struct LoyerDetailView: View {
         })
         }) 
         .onAppear {
-            loyer = gestionBD.obtenirLoyer(loyerId);
+            loyer = gestionBD.obtenirLoyer(id : loyerId)!;
         }
     }        
 }

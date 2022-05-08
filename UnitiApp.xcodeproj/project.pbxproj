@@ -25,7 +25,7 @@
 		68046A872823341700F685E9 /* LoyerCreationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoyerCreationView.swift; sourceTree = "<group>"; };
 		68046A892823FC6400F685E9 /* Authentification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authentification.swift; sourceTree = "<group>"; };
 		891B547F2824005A00133CBF /* gestionloyer.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = gestionloyer.db; path = Dev/gestionloyer.db; sourceTree = SOURCE_ROOT; };
-		89C9DC862817180B0080BFF3 /* UnitiApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UnitiApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		89C9DC862817180B0080BFF3 /* Jonathan Cote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Jonathan Cote.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89C9DC892817180B0080BFF3 /* UnitiAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitiAppApp.swift; sourceTree = "<group>"; };
 		89C9DC8B2817180B0080BFF3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		89C9DC8D2817180C0080BFF3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -55,7 +55,7 @@
 		89C9DC872817180B0080BFF3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				89C9DC862817180B0080BFF3 /* UnitiApp.app */,
+				89C9DC862817180B0080BFF3 /* Jonathan Cote.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -128,7 +128,7 @@
 			packageProductDependencies = (
 			);
 			productName = UnitiApp;
-			productReference = 89C9DC862817180B0080BFF3 /* UnitiApp.app */;
+			productReference = 89C9DC862817180B0080BFF3 /* Jonathan Cote.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -324,8 +324,8 @@
 				DEVELOPMENT_TEAM = 2NDPZM9UA4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "$(PRODUCT_NAME) a besoin d'utiliser Face ID pour valider votre identité";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) a besoin de connaître l'emplacement des loyers.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "UnitiApp a besoin d'utiliser Face ID pour valider votre identité";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "UnitiApp a besoin de connaître l'emplacement des loyers.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -337,7 +337,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.jonathancote.UnitiApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Jonathan Cote";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -355,8 +355,8 @@
 				DEVELOPMENT_TEAM = 2NDPZM9UA4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSFaceIDUsageDescription = "$(PRODUCT_NAME) a besoin d'utiliser Face ID pour valider votre identité";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) a besoin de connaître l'emplacement des loyers.";
+				INFOPLIST_KEY_NSFaceIDUsageDescription = "UnitiApp a besoin d'utiliser Face ID pour valider votre identité";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "UnitiApp a besoin de connaître l'emplacement des loyers.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -368,7 +368,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ca.jonathancote.UnitiApp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Jonathan Cote";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

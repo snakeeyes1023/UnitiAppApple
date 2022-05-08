@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @AppStorage("hauteurItem") var hauteurItem: Double = 0.0
+    @AppStorage("hauteurItem") var hauteurItem: Double = 55
 
     @ObservedObject var authentification: Authentification = Authentification()
 
@@ -46,7 +46,6 @@ struct ContentView: View {
                             ForEach(loyers) { loyer in
                                 NavigationLink(destination: LoyerDetailView(loyerId: loyer.id, gestionBD: $gestionBD)) {
                                     HStack {
-                                        //satus color
                                         if loyer.dispo {
                                             Image(systemName: "checkmark.circle.fill")
                                                 .foregroundColor(.green)
@@ -59,12 +58,11 @@ struct ContentView: View {
 
                                       Text(loyer.nom)
                                         .foregroundColor(.primary)
-                                    }.frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, hauteurItem: , alignment: .topLeading)
-
+                                    }.frame(height: hauteurItem)
                                 }
                         }
                         .onDelete(perform: deleteLoyer)
-                        }
+                        }.environment(\.defaultMinListRowHeight, hauteurItem)
                     }
                 
         }
@@ -80,28 +78,56 @@ struct ContentView: View {
                 ToolbarItem(placement: .navigationBarTrailing, content: {
                     Button(action: {
                     self.action = 1
-                }) {
+                    }) {
                   HStack {
-                    Image(systemName: "plus.app.fill")
-                    Text("Ajouter")
+                    Image(systemName: "plus")
                   }
                 }
+                })
+                
+                ToolbarItem(placement: .bottomBar, content: {
+                    
+                    HStack{
+                        ZStack(){
+                            Rectangle()
+                                .fill(Color.gray)
+                                .opacity(0.09)
+                                .cornerRadius(10)
+                            
+                        HStack{
+                            Button(action: {
+                                hauteurItem = hauteurItem - 1
+                            }) {
+                                HStack {
+                                    Image(systemName: "minus")
+                                }
+                            }.padding(5)
+                            
+                            Spacer()
+                                
+                            Button(action: {
+                                hauteurItem = hauteurItem + 1
 
-                ToolbarItem(placement: .bottomBar) {
-                    Button("-") {
-                        hauteurItem = hauteurItem - 1
+                            }) {
+                                HStack {
+                                    Image(systemName: "plus")
+                                }
+                            }.padding(5)
+                        }}.padding()
+                        
                     }
-
-                    Spacer()
-
-                    Button("+") {
-                        hauteurItem = hauteurItem + 1
-                    }
-                }
+                })
               })
-            })
         .onAppear {
             loyers = gestionBD.listeLoyers();
+            
+            if(!initialDonnees)
+            {
+                initialDonnees = true
+                Task{
+                    await gestionBD.synchroniserLoyers()
+                }
+            }
 
         }
     }
@@ -116,6 +142,10 @@ struct ContentView: View {
             _ = gestionBD.supprimerLoyer(id: loyers[index].id);
         }
         loyers = gestionBD.listeLoyers();
+        
+        Task{
+            await gestionBD.synchroniserLoyers()
+        }
     }
 }
 

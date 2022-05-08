@@ -238,37 +238,33 @@ func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double, longitu
   */
   func toggleDispo(id : Int, nVal : Bool) -> Bool
   {
-    var requete: String = ""
-    if nVal {
-      requete = "UPDATE loyers SET dispo = 1 WHERE id = ?"
-    } else {
-      requete = "UPDATE loyers SET dispo = 0 WHERE id = ?"
-    }
+      let requete: String = "UPDATE loyers SET dispo = ? WHERE id = ?"
+      var preparation: OpaquePointer? = nil
+      var resultat: Bool = false
+      // prépare la requête
+      if sqlite3_prepare_v2(pointeurBD, requete, -1, &preparation, nil) == SQLITE_OK {
 
-    var preparation: OpaquePointer? = nil
-    var resultat: Bool = false
-    // prépare la requête
-    if sqlite3_prepare_v2(pointeurBD, requete, -1, &preparation, nil) == SQLITE_OK {
+        // ajoute les paramètres
+        sqlite3_bind_int(preparation, 1, Int32(nVal ? 1 : 0))
+        sqlite3_bind_int(preparation, 2, Int32(id))
 
-      // ajoute les paramètres
-      sqlite3_bind_int(preparation, 1, Int32(id))
-
-      // exécute la requête
-      if sqlite3_step(preparation) == SQLITE_DONE {
-        print("Loyer modifié")
-        resultat = true
+        // exécute la requête
+        if sqlite3_step(preparation) == SQLITE_DONE {
+          print("Loyer modifié")
+          resultat = true
+        } else {
+          let erreur = String(cString: sqlite3_errmsg(pointeurBD))
+          print("\nLa requête n'a pas pu être exécutée : \(erreur)")
+        }
       } else {
         let erreur = String(cString: sqlite3_errmsg(pointeurBD))
-        print("\nLa requête n'a pas pu être exécutée : \(erreur)")
+        print("\nLa requête n'a pas pu être préparée : \(erreur)")
       }
-    } else {
-      let erreur = String(cString: sqlite3_errmsg(pointeurBD))
-      print("\nLa requête n'a pas pu être préparée : \(erreur)")
-    }
 
-    // libération de la mémoire
-    sqlite3_finalize(preparation)
-    return resultat
+      // libération de la mémoire
+      sqlite3_finalize(preparation)
+      return resultat
+
   }
 
   func obtenirLoyer(id: Int) -> Loyer?
@@ -284,15 +280,16 @@ func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double, longitu
 
       // exécute la requête
       if sqlite3_step(preparation) == SQLITE_ROW {
-        let id = Int(sqlite3_column_int(preparation, 0))
-        let nom = String(cString: sqlite3_column_text(preparation, 1))
-        let prix = Double(sqlite3_column_double(preparation, 2))
-        let grandeur = Double(sqlite3_column_double(preparation, 3))
-        let longitude = String(cString: sqlite3_column_text(preparation, 4))
-        let lattitude = String(cString: sqlite3_column_text(preparation, 5))
-        let dispo = Bool(sqlite3_column_int(preparation, 6))
+          let id = Int(sqlite3_column_int(preparation, 0))
+          let nom = String(cString: sqlite3_column_text(preparation, 1))
+          let grandeur = Double(sqlite3_column_double(preparation, 2))
+          let prix = Double(sqlite3_column_double(preparation, 3))
+          let uuid = String(cString: sqlite3_column_text(preparation, 4))
+          let dispo = Int(sqlite3_column_int(preparation, 5)) == 1
+          let longitude = String(cString: sqlite3_column_text(preparation, 6))
+          let lattitude = String(cString: sqlite3_column_text(preparation, 7))
 
-        resultat = Loyer(id: id, nom: nom, prix: prix, grandeur: grandeur, longitude: longitude, lattitude: lattitude, dispo: dispo)
+          resultat = Loyer(id: id, nom: nom, grandeur: grandeur, longitude: longitude, lattitude: lattitude, prix: prix, uuid: uuid, dispo: dispo)
       } else {
         let erreur = String(cString: sqlite3_errmsg(pointeurBD))
         print("\nLa requête n'a pas pu être exécutée : \(erreur)")
@@ -308,14 +305,13 @@ func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double, longitu
   }
 
   //Syncronisation des loyers
-  func synchroniserLoyers() -> Bool {
+    func synchroniserLoyers() async -> Void {
 
     let donneesJSON = try! JSONEncoder().encode(listeLoyers())
 
     let chaineURL = "https://unitiMobile.jonathancote.ca/synchro-loyers.php"
 
     guard let url = URL(string: chaineURL) else {
-      messageErreur = "Un problème empêche de retrouver l'image (code 1)."
       print("URL invalide : \(chaineURL)")
       return
     }
@@ -324,11 +320,11 @@ func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double, longitu
     var request = URLRequest(url: url)
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     request.setValue("application/json", forHTTPHeaderField: "Accept")
-    request.httpMethod ="POST"
+    request.httpMethod = "POST"
     request.httpBody = donneesJSON
 
     // lance la requête HTTP
-    let (data, response) = try await URLSession.shared.data(for: request)
+    let (data, response) = try! await URLSession.shared.data(for: request)
 
     // affiche les données reçues
     if let donnees = String(data: data, encoding: .utf8) {
@@ -337,5 +333,5 @@ func modifierLoyer(id: Int, nom: String, prix: Double, grandeur: Double, longitu
 
     print(response)
 
-    return true
+}
 }

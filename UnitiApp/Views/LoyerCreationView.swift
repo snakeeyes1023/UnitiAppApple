@@ -68,6 +68,9 @@ struct LoyerCreationView: View {
                                            
                                            // Si la création a réussi, on affiche un message de confirmation
                                             if(result){
+                                                Task{
+                                                    await gestionBD.synchroniserLoyers()
+                                                }
                                                 dismiss()
                                                 self.generator.notificationOccurred(.success)
                                             }
