@@ -1,8 +1,11 @@
+//
+//  LoyerCreation.swift
+//  Jonathan Côté
+//
+
 import CoreLocation
 import CoreLocationUI
-//
-//  LoyerDetailView.swift
-//
+
 import SwiftUI
 
 struct LoyerCreationView: View {

@@ -1,8 +1,6 @@
 //
 //  loyer.swift
-//  UnitiApp
-//
-//  Created by Josee Nolet on 2022-05-04.
+//  Jonathan Côté
 //
 
 import Foundation
