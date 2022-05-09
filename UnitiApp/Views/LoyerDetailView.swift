@@ -54,7 +54,7 @@ struct LoyerDetailView: View {
                     }
                     
                     Spacer()
-
+                    ScrollView{
                     VStack(alignment: .leading){
  
                         HStack(){
@@ -78,7 +78,7 @@ struct LoyerDetailView: View {
                         HStack(){
                             Text("Prix").modifier(TexteTag())
                             Spacer()
-                            Text(loyer.prix)
+                            Text("\(loyer.prix, specifier: "%.2f")$")
                         }.padding()
                         
                         HStack(){
@@ -97,7 +97,7 @@ struct LoyerDetailView: View {
                         }.padding()
                         
                     }.padding(5)
-                    
+                    }
                     Spacer()
                 }
             }
