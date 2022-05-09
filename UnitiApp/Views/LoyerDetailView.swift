@@ -1,7 +1,6 @@
 //
 //  LoyerDetailView.swift
-//  GestionObjetConnecte
-//
+//  Jonathan Côté
 //
 import SwiftUI
 
