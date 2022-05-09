@@ -75,6 +75,12 @@ struct LoyerDetailView: View {
                             Spacer()
                             Text(loyer.lattitude)
                         }.padding()
+
+                        HStack(){
+                            Text("Prix").modifier(TexteTag())
+                            Spacer()
+                            Text(loyer.prix)
+                        }.padding()
                         
                         HStack(){
                             Text("Dispo").modifier(TexteTag())
